@@ -6,7 +6,7 @@
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
-    <groupId>com.githuab.bingoohuang</groupId>
+    <groupId>com.github.bingoohuang</groupId>
     <artifactId>diamond-sdk</artifactId>
     <version>0.0.4-SNAPSHOT</version>
     <name>diamond sdk</name>
