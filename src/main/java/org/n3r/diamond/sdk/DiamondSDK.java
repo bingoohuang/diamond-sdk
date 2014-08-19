@@ -281,7 +281,7 @@ public class DiamondSDK {
 
     private PageContextResult<DiamondStone> processQuery(String dataIdPattern, String groupNamePattern,
                                                          String contentPattern, long currentPage, long sizeOfPerPage) {
-        PageContextResult<DiamondStone> response = new PageContextResult<>();
+        PageContextResult<DiamondStone> response = new PageContextResult<DiamondStone>();
         ContextResult loginResult = new ContextResult();
         if (!login(loginResult)) {
             response.setSuccess(false);
@@ -333,7 +333,7 @@ public class DiamondSDK {
                         }
                         response.operation();
 
-                        List<DiamondStone> pageItems = new ArrayList<>();
+                        List<DiamondStone> pageItems = new ArrayList<DiamondStone>();
                         if (page != null) {
                             pageItems = page.getPageItems();
                         }
@@ -378,7 +378,7 @@ public class DiamondSDK {
         List<DiamondStone> diamondData = page.getPageItems();
         if (!StringUtils.isBlank(contentPattern)) {
             Pattern pattern = Pattern.compile(contentPattern.replaceAll("\\*", ".*"));
-            List<DiamondStone> newList = new ArrayList<>();
+            List<DiamondStone> newList = new ArrayList<DiamondStone>();
             Collections.sort(diamondData);
             int totalCount = 0;
             long begin = sizeOfPerPage * (currentPage - 1);
