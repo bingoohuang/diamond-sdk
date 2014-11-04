@@ -20,6 +20,8 @@ import org.n3r.diamond.sdk.utils.RandomDiamondUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -298,11 +300,11 @@ public class DiamondSDK {
                 log.warn("注意, 正在根据内容来进行模糊查询, dataIdPattern=" + dataIdPattern + ",groupNamePattern=" + groupNamePattern
                         + ",contentPattern=" + contentPattern);
                 // 模糊查询内容，全部查出来
-                url = String.format(LIST_LIKE_FORMAT_URL, groupNamePattern, dataIdPattern, 1, Integer.MAX_VALUE);
+                url = String.format(LIST_LIKE_FORMAT_URL, urlSafe(groupNamePattern), urlSafe(dataIdPattern), 1, Integer.MAX_VALUE);
             } else
-                url = String.format(LIST_LIKE_FORMAT_URL, groupNamePattern, dataIdPattern, currentPage, sizeOfPerPage);
+                url = String.format(LIST_LIKE_FORMAT_URL, urlSafe(groupNamePattern), urlSafe(dataIdPattern), currentPage, sizeOfPerPage);
         } else {
-            url = String.format(LIST_FORMAT_URL, groupNamePattern, dataIdPattern, currentPage, sizeOfPerPage);
+            url = String.format(LIST_FORMAT_URL, urlSafe(groupNamePattern), urlSafe(dataIdPattern), currentPage, sizeOfPerPage);
         }
 
         GetMethod method = new GetMethod(url);
@@ -413,11 +415,12 @@ public class DiamondSDK {
     }
 
 
-    public ContextResult delete(long id) {
+    public ContextResult delete(String id) {
         ContextResult response = new ContextResult();
         if (!login(response)) return response;
 
-        String url = "/diamond-server/admin.do?method=deleteConfig&id=" + id;
+        String encodedId = urlSafe(id);
+        String url = "/diamond-server/admin.do?method=deleteConfig&id=" + encodedId;
         GetMethod method = new GetMethod(url);
         HttpClientUtils.configureGetMethod(method, requireTimeout);
         try {
@@ -452,6 +455,14 @@ public class DiamondSDK {
         }
 
         return response;
+    }
+
+    private String urlSafe(String id)  {
+        try {
+            return URLEncoder.encode(id, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

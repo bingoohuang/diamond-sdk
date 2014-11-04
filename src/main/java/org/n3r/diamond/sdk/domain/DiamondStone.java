@@ -5,7 +5,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.io.Serializable;
 
 public class DiamondStone implements Serializable, Comparable<DiamondStone> {
-    private long id;
+    private String id;
     private String group;
     private String dataId;
     private String content;
@@ -63,12 +63,12 @@ public class DiamondStone implements Serializable, Comparable<DiamondStone> {
     }
 
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
