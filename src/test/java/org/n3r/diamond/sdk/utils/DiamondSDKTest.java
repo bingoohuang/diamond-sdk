@@ -13,7 +13,7 @@ public class DiamondSDKTest {
 
     @BeforeClass
     public static void beforeClass() {
-        DiamondConf diamondConf = new DiamondConf("a.b.d", 17002, "admin", "libai123");
+        DiamondConf diamondConf = new DiamondConf("a.b.c", 17002, "username", "password", "basicUser:basicPassword");
         DiamondSDKConf diamondSDKConf = new DiamondSDKConf(Lists.newArrayList(diamondConf));
 
         diamondSDK = new DiamondSDK(diamondSDKConf);

@@ -6,6 +6,9 @@ import java.text.MessageFormat;
  * 单个diamond基本信息配置类
  */
 public class DiamondConf {
+    // basic 认证, 格式: username:password
+    private String basicAuth;
+
     // diamondServer web访问地址
     private String diamondIp;
 
@@ -21,6 +24,11 @@ public class DiamondConf {
 
     public DiamondConf() {
 
+    }
+
+    public DiamondConf(String diamondIp, int diamondPort, String diamondUsername, String diamondPassword, String basicAuth) {
+        this(diamondIp, diamondPort, diamondUsername, diamondPassword);
+        this.basicAuth = basicAuth;
     }
 
     public DiamondConf(String diamondIp, int diamondPort, String diamondUsername, String diamondPassword) {
@@ -74,12 +82,17 @@ public class DiamondConf {
         this.diamondPassword = diamondPassword;
     }
 
+    public String getBasicAuth() {
+        return basicAuth;
+    }
+
+    public void setBasicAuth(String basicAuth) {
+        this.basicAuth = basicAuth;
+    }
 
     @Override
     public String toString() {
-        return "[diamondIp=" + diamondIp + ",diamondPort=" + diamondPort + ",diamondUsername=" + diamondUsername
-                + ",diamondPassword=" + diamondPassword + "]";
+        return "[diamondIp=" + diamondIp + ",diamondPort=" + diamondPort + "]";
     }
-
 }
 

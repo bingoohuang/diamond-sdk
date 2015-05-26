@@ -43,7 +43,7 @@ public class DiamondSDK {
     private final MultiThreadedHttpConnectionManager connectionManager;
 
     public DiamondSDK(DiamondSDKConf diamondSDKConf) {
-        this(3000, 3000, diamondSDKConf);
+        this(30000, 30000, diamondSDKConf);
     }
 
     // 构造时需要传入连接超时时间，请求超时时间
@@ -630,6 +630,8 @@ public class DiamondSDK {
             if (diamondConf == null) break;
 
             client.getHostConfiguration().setHost(diamondConf.getDiamondIp(), diamondConf.getDiamondPort(), "http");
+            HttpClientUtils.setBasicAuth(client, diamondConf);
+
             PostMethod post = new PostMethod("/diamond-server/login.do?method=login");
             HttpClientUtils.configureGetMethod(post, requireTimeout);
             NameValuePair username = new NameValuePair("username", diamondConf.getDiamondUsername());

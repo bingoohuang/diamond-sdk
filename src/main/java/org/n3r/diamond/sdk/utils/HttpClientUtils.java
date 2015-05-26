@@ -1,15 +1,18 @@
 package org.n3r.diamond.sdk.utils;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.n3r.diamond.sdk.domain.DiamondConf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 
@@ -56,5 +59,24 @@ public class HttpClientUtils {
         method.addRequestHeader("Accept", "application/json");
         // 设置请求超时时间
         method.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, require_timeout);
+    }
+
+    public static void setBasicAuth(HttpClient client, String host, int port, String basicAuth) {
+        if (Strings.isNullOrEmpty(basicAuth)) return;
+
+        List<String> splits = Splitter.on(':').trimResults().splitToList(basicAuth);
+
+        if (splits.size() < 2) return;
+        String userName = splits.get(0);
+        String passWord = splits.get(1);
+
+        client.getParams().setAuthenticationPreemptive(true);
+        Credentials credentials = new UsernamePasswordCredentials(userName, passWord);
+        AuthScope authScope = new AuthScope(host, port, AuthScope.ANY_REALM);
+        client.getState().setCredentials(authScope, credentials);
+    }
+
+    public static void setBasicAuth(HttpClient client, DiamondConf diamondConf) {
+        setBasicAuth(client, diamondConf.getDiamondIp(), diamondConf.getDiamondPort(), diamondConf.getBasicAuth());
     }
 }
